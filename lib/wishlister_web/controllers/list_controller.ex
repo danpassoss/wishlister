@@ -22,7 +22,6 @@ defmodule WishlisterWeb.ListController do
     checkins = Checkins.recent_checkins(conn)
     render conn, "list.html", checkins: checkins, wishlist: wishlist
   end
-
   def wishlist_query(user_id) do
     from v in "venues",
     where: v.user_id == ^user_id,

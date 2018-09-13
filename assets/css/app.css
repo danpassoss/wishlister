@@ -36,3 +36,8 @@
   height: 213px !important;
   width: 211px;
 }
+
+.card-content p {
+  font-size: 12px;
+  font-weight: 600;
+}

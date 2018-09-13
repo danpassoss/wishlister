@@ -13,8 +13,8 @@ defmodule WishlisterWeb.Checkins do
         parse_response(body)
         |> build_venue_friends_list(user_token)
 
-      {:error, %HTTPoison.Error{reason: _reason}} ->
-
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(reason) #Clean warning: A expression is always required...
     end
   end
 
@@ -39,18 +39,18 @@ defmodule WishlisterWeb.Checkins do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
         parse_response(body)
         |> build_venue_img_url
-      {:error, %HTTPoison.Error{reason: _reason}} ->
-
+      {:error, %HTTPoison.Error{reason: reason}} ->
+        IO.inspect(reason) #Clean warning: A expression is always required...
       end
   end
 
   def build_venue_img_url(%{"response" => %{"photos" => %{"items" => items}}}) do
     case length(items) do
-      1 ->
-        "#{List.first(items)["prefix"]}300x300#{List.first(items)["suffix"]}"
       0 ->
         "http://placehold.it/300x300"
-    end
+      _ ->
+        "#{List.first(items)["prefix"]}300x300#{List.first(items)["suffix"]}"
+      end
   end
 
   def join_today_date() do
@@ -59,6 +59,6 @@ defmodule WishlisterWeb.Checkins do
   end
 
   def recent_friends_checkin_suffix(token) do
-    "checkins/recent?oauth_token=#{token}&limit=1&v=#{join_today_date()}"
+    "checkins/recent?oauth_token=#{token}&limit=10&v=#{join_today_date()}"
   end
 end

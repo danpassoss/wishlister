@@ -13,7 +13,7 @@
               <img src="<%= wish.image_url %>">
             </div>
             <div class="card-content">
-              <h6><%= wish.name %></h6>
+              <p><%= wish.name %></p>
             </div>
           </div>
         </div>
@@ -37,7 +37,7 @@
               <img src="<%= checkin.image_url %>">
             </div>
             <div class="card-content">
-              <h6><%= checkin.name %></h6>
+              <p><%= checkin.name %></p>
             </div>
           </div>
         </div>
