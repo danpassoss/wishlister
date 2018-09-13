@@ -33,7 +33,6 @@ defmodule WishlisterWeb.ListController do
     changeset = conn.assigns.user
       |> Ecto.build_assoc(:venues)
       |> Venue.changeset(venue)
-
     case Repo.insert(changeset) do
       {:ok, _venue} ->
         conn

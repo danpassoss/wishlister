@@ -24,12 +24,11 @@ defmodule WishlisterWeb.Checkins do
   end
 
   def build_venue_friends_list(%{"response" => %{"recent" => checkins}}, user_token) do
-    checkins_list =
       for checkin <- checkins do
         %{
-          venue_pid: 1234567,#checkin["venue"]["id"],
-          name: "Local",#checkin["venue"]["name"],
-          image_url: "https://cdn.leroymerlin.com.br/products/tela_paisagem_praia_30x30cm_89317571_0001_300x300.jpg" #venue_img_request(checkin["venue"]["id"], user_token)
+          venue_pid: checkin["venue"]["id"],
+          name: checkin["venue"]["name"],
+          image_url: venue_img_request(checkin["venue"]["id"], user_token)
         }
       end
   end
@@ -60,6 +59,6 @@ defmodule WishlisterWeb.Checkins do
   end
 
   def recent_friends_checkin_suffix(token) do
-    "checkins/recent?oauth_token=#{token}&limit=10&v=#{join_today_date()}"
+    "checkins/recent?oauth_token=#{token}&limit=1&v=#{join_today_date()}"
   end
 end

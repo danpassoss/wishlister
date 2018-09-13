@@ -6,7 +6,7 @@ defmodule Wishlister.Venue do
   schema "venues" do
     field :image_url, :string
     field :name, :string
-    field :venue_pid, :integer
+    field :venue_pid, :string
     field :user_id, :id
 
     timestamps()

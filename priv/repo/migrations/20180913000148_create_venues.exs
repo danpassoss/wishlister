@@ -5,7 +5,7 @@ defmodule Wishlister.Repo.Migrations.CreateVenues do
     create table(:venues) do
       add :name, :string
       add :image_url, :string
-      add :venue_pid, :integer
+      add :venue_pid, :string
       add :user_id, references(:users, on_delete: :nothing)
 
       timestamps()
