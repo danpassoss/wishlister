@@ -1,0 +1,47 @@
+<div class="wishlist">
+  <h4>User wishlist</h4>
+
+  <div class="recent-container">
+    <%= for wish <- @wishlist do %>
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card small">
+            <%= button to: list_path(@conn, :delete, wish), method: "delete", title: "Remove", class: "btn-floating halfway-fab waves-effect waves-light blue" do %>
+              <i class="material-icons">delete</i>
+            <% end %> 
+            <div class="card-image">
+              <img src="<%= wish.image_url %>">
+            </div>
+            <div class="card-content">
+              <h6><%= wish.name %></h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<div class="recents-checkins">
+  <h4>Recents Friends Checkins</h4>
+
+  <div class="recent-container">
+    <%= for checkin <- @checkins do %>
+      <div class="row">
+        <div class="col s12 m6">
+          <div class="card small">
+            <%= button to: list_path(@conn, :create, checkin: checkin), method: "post", title: "Add", class: "btn-floating halfway-fab waves-effect waves-light red" do %>
+              <i class="material-icons">add</i>
+            <% end %>
+            <div class="card-image">
+              <img src="<%= checkin.image_url %>">
+            </div>
+            <div class="card-content">
+              <h6><%= checkin.name %></h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

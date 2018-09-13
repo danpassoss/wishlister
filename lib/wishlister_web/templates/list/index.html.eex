@@ -1,0 +1,7 @@
+<div class="container-index">
+  <%= if !@conn.assigns[:user] do %>
+    <%= button to: auth_path(@conn, :request, "foursquare"), method: "get", class: "btn-large waves-effect waves-light" do %>
+      <i class="material-icons right">send</i>Sign in with Foursquare
+    <% end %>
+  <% end %>
+</div>
