@@ -10,8 +10,10 @@ config :wishlister, WishlisterWeb.Endpoint,
 # Do not print debug messages in production
 config :logger, level: :info
 
-config :hello, WishlisterWeb.Repo,
+config :hello, Wishlister.Repo,
   adapter: Ecto.Adapters.Postgres,
   url: System.get_env("DATABASE_URL"),
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10"),
   ssl: true
+
+  1x8FWaxBnHnZJ63yOIKCMx2d/P67S8rAJKZZdBeumJYm/62pDULMfsFiaN9kSyIe

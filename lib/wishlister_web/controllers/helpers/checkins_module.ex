@@ -59,6 +59,6 @@ defmodule WishlisterWeb.Checkins do
   end
 
   def recent_friends_checkin_suffix(token) do
-    "checkins/recent?oauth_token=#{token}&limit=10&v=#{join_today_date()}"
+    "checkins/recent?oauth_token=#{token}&limit=6&v=#{join_today_date()}"
   end
 end
