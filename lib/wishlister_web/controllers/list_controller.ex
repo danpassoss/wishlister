@@ -1,3 +1,4 @@
+require IEx;
 defmodule WishlisterWeb.ListController do
   use WishlisterWeb, :controller
 
@@ -17,11 +18,20 @@ defmodule WishlisterWeb.ListController do
   def list(conn, _params) do
     wishlist =
       wishlist_query(conn.assigns[:user].id)
-      |>Repo.all
+      |> Repo.all
 
-    checkins = Checkins.recent_checkins(conn)
+    checkins =
+      Checkins.recent_checkins(conn)
+      |> filter_not_added_venues(wishlist)
+
     render conn, "list.html", checkins: checkins, wishlist: wishlist
   end
+
+  def filter_not_added_venues(checkins, wishlist) do
+    venues_pids = Enum.map(wishlist, & &1.venue_pid)
+    Enum.filter(checkins, & &1.venue_pid not in venues_pids)
+  end
+
   def wishlist_query(user_id) do
     from v in "venues",
     where: v.user_id == ^user_id,
