@@ -2,7 +2,7 @@ defmodule WishlisterWeb.Plugs.SetUser do
   import Plug.Conn
 
   alias Wishlister.Repo
-  alias Wishlister.User
+  alias Wishlister.Accounts.User
 
   def init(_params) do
 

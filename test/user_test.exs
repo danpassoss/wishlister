@@ -1,7 +1,7 @@
 defmodule Wishlister.UserTest do
   use Wishlister.DataCase
 
-  alias Wishlister.User
+  alias Wishlister.Accounts.User
 
   @valid_attrs %{
     email: "test@test.com",

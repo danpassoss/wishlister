@@ -2,13 +2,13 @@ require IEx;
 defmodule WishlisterWeb.ListController do
   use WishlisterWeb, :controller
 
-  import Ecto.Query
 
-  alias Wishlister.{Venue, Repo}
-  alias WishlisterWeb.Checkins
+  alias Wishlister.Checkins
 
   plug WishlisterWeb.Plugs.RequireAuth when action in [
-    :list
+    :list,
+    :create,
+    :delete
   ]
 
   def index(conn, _params) do
@@ -16,33 +16,20 @@ defmodule WishlisterWeb.ListController do
   end
 
   def list(conn, _params) do
-    wishlist =
-      wishlist_query(conn.assigns[:user].id)
-      |> Repo.all
+    user = conn.assigns[:user]
 
-    checkins =
-      Checkins.recent_checkins(conn)
-      |> filter_not_added_venues(wishlist)
+    wishlist = Checkins.get_user_wishlist(user.id)
 
-    render conn, "list.html", checkins: checkins, wishlist: wishlist
-  end
+    friends_checkins =
+      Checkins.recents_friends_checkins(user.token)
+      |> Checkins.filter_not_added_venues(wishlist)
 
-  def filter_not_added_venues(checkins, wishlist) do
-    venues_pids = Enum.map(wishlist, & &1.venue_pid)
-    Enum.filter(checkins, & &1.venue_pid not in venues_pids)
-  end
-
-  def wishlist_query(user_id) do
-    from v in "venues",
-    where: v.user_id == ^user_id,
-    select: %Venue{id: v.id, name: v.name, image_url: v.image_url, venue_pid: v.venue_pid}
+    render conn, "list.html", checkins: friends_checkins, wishlist: wishlist
   end
 
   def create(conn, %{"checkin" => venue}) do
-    changeset = conn.assigns.user
-      |> Ecto.build_assoc(:venues)
-      |> Venue.changeset(venue)
-    case Repo.insert(changeset) do
+    user = conn.assigns.user
+    case Checkins.add_venue_to_wishlist(user, venue) do
       {:ok, _venue} ->
         conn
         |> put_flash(:info, "Venue added on your wishlist")
@@ -55,7 +42,7 @@ defmodule WishlisterWeb.ListController do
   end
 
   def delete(conn, %{"id" => venue_id}) do
-    Repo.get!(Venue, venue_id) |> Repo.delete!
+    Checkins.remove_venue_from_wishlist(venue_id)
 
     conn
     |> put_flash(:info, "Venue removed from your wishlist!")

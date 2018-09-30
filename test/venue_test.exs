@@ -1,7 +1,7 @@
 defmodule Wishlister.VenueTest do
   use Wishlister.DataCase
 
-  alias Wishlister.Venue
+  alias Wishlister.Checkins.Venue
 
   @valid_attrs %{
     name: "Local Name",

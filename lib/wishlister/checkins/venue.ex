@@ -1,4 +1,4 @@
-defmodule Wishlister.Venue do
+defmodule Wishlister.Checkins.Venue do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -15,7 +15,15 @@ defmodule Wishlister.Venue do
   @doc false
   def changeset(venue, attrs) do
     venue
-    |> cast(attrs, [:name, :image_url, :venue_pid])
-    |> validate_required([:name, :image_url, :venue_pid])
+    |> cast(attrs, [
+      :name,
+      :image_url,
+      :venue_pid
+    ])
+    |> validate_required([
+      :name,
+      :image_url,
+      :venue_pid
+    ])
   end
 end
