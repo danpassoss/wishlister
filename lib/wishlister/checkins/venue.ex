@@ -23,7 +23,7 @@ defmodule Wishlister.Checkins.Venue do
     |> validate_required([
       :name,
       :image_url,
-      :venue_pid
+      :venue_pid,
     ])
   end
 end

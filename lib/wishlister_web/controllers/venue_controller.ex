@@ -1,5 +1,4 @@
-require IEx;
-defmodule WishlisterWeb.ListController do
+defmodule WishlisterWeb.VenueController do
   use WishlisterWeb, :controller
 
 
@@ -33,11 +32,11 @@ defmodule WishlisterWeb.ListController do
       {:ok, _venue} ->
         conn
         |> put_flash(:info, "Venue added on your wishlist")
-        |> redirect(to: list_path(conn, :list))
+        |> redirect(to: venue_path(conn, :list))
       {:error, _changeset} ->
         conn
         |> put_flash(:error, "Failed to add venue on your wishlist")
-        |> redirect(to: list_path(conn, :list))
+        |> redirect(to: venue_path(conn, :list))
     end
   end
 
@@ -46,6 +45,6 @@ defmodule WishlisterWeb.ListController do
 
     conn
     |> put_flash(:info, "Venue removed from your wishlist!")
-    |> redirect(to: list_path(conn, :list))
+    |> redirect(to: venue_path(conn, :list))
   end
 end

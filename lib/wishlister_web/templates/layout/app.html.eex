@@ -27,7 +27,7 @@
             <li class="avatar">
               <img src="<%= @conn.assigns[:user].avatar %>" alt="Avatar" class="circle">
             <li>
-              <%= link to: auth_path(@conn, :signout) do %>
+              <%= link to: user_path(@conn, :signout) do %>
                 <i class="material-icons" title="Logout">exit_to_app</i>
               <% end %>
             </li>

@@ -1,4 +1,4 @@
-defmodule WishlisterWeb.AuthController do
+defmodule WishlisterWeb.UserController do
   use WishlisterWeb, :controller
 
   plug Ueberauth
@@ -12,17 +12,17 @@ defmodule WishlisterWeb.AuthController do
         conn
         |> put_flash(:info, "Welcome back!")
         |> put_session(:user_id, user.id)
-        |> redirect(to: list_path(conn, :list))
+        |> redirect(to: venue_path(conn, :list))
       { :error, _reason } ->
         conn
         |> put_flash(:error, "Error sign in")
-        |> redirect(to: list_path(conn, :index))
+        |> redirect(to: venue_path(conn, :index))
     end
   end
 
   def signout(conn, _params) do
     conn
     |> configure_session(drop: true)
-    |> redirect(to: list_path(conn, :index))
+    |> redirect(to: venue_path(conn, :index))
   end
 end

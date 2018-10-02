@@ -12,7 +12,7 @@ defmodule WishlisterWeb.Plugs.RequireAuth do
     else
       conn
       |> put_flash(:error, "You must be logged in.")
-      |> redirect(to: Helpers.list_path(conn, :index))
+      |> redirect(to: Helpers.venue_path(conn, :index))
       |> halt()
     end
   end

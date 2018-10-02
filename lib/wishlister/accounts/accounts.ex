@@ -23,7 +23,7 @@ defmodule Wishlister.Accounts do
     "#{prefix}52x52#{suffix}"
   end
 
-  defp insert_or_update_user(changeset) do
+  def insert_or_update_user(changeset) do
     case Repo.get_by(User, provider_uid: changeset.changes.provider_uid) do
       nil ->
         Repo.insert(changeset)

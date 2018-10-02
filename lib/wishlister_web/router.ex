@@ -17,19 +17,19 @@ defmodule WishlisterWeb.Router do
   scope "/", WishlisterWeb do
     pipe_through :browser # Use the default browser stack
 
-    get "/", ListController, :index
-    get "/wishlist", ListController, :list
-    post "/venues", ListController, :create
-    delete "/venues/:id", ListController, :delete
+    get "/", VenueController, :index
+    get "/wishlist", VenueController, :list
+    post "/venues", VenueController, :create
+    delete "/venues/:id", VenueController, :delete
 
   end
 
   scope "/auth", WishlisterWeb do
     pipe_through :browser
 
-    get "/signout", AuthController, :signout
-    get "/:provider", AuthController, :request
-    get "/:provider/callback", AuthController, :callback
+    get "/signout", UserController, :signout
+    get "/:provider", UserController, :request
+    get "/:provider/callback", UserController, :callback
   end
 
   # Other scopes may use custom stacks.

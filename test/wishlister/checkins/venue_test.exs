@@ -6,7 +6,7 @@ defmodule Wishlister.VenueTest do
   @valid_attrs %{
     name: "Local Name",
     image_url: "http://placehold.it",
-    venue_pid: "55bba25699hh"
+    venue_pid: "55bba25699hh",
   }
 
   @invalid_attrs %{}
