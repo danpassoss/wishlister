@@ -26,23 +26,23 @@ defmodule Wishlister.CheckinsTest do
       assert  {:ok, venue} = response
     end
 
-    test "should return an empty wishlist", %{user: user} do
+    test "should return an empty user wishlist", %{user: user} do
       wishlist = Checkins.get_user_wishlist(user.id)
       assert is_list(wishlist)
       assert wishlist == []
     end
 
-    test "shouldn't return an empty wishlist", %{user: user} do
+    test "shouldn't return an empty user wishlist", %{user: user} do
       Checkins.add_venue_to_wishlist(user, @venue)
       wishlist = Checkins.get_user_wishlist(user.id)
       assert is_list(wishlist)
       refute wishlist == []
     end
 
-    test "test", %{user: user} do
-      response = Checkins.recents_friends_checkins(user.token)
-      assert is_list(response)
-    end
+    # test "test", %{user: user} do
+    #   response = Checkins.recents_friends_checkins(user.token)
+    #   assert is_list(response)
+    # end
 
   end
 

@@ -1,31 +1,30 @@
 defmodule WishlisterWeb.UserControllerTest do
   use WishlisterWeb.ConnCase
 
-  alias Wishlister.Accounts
+  alias Wishlister.{Accounts, Accounts.User, Repo}
 
-  # test "callback/2 responds with user signin", %{conn: conn} do
-  #   user = %{
-  #     uid: "123456789",
-  #     credentials: %{
-  #       token: "QJJSIJD89AJDQKJ2MGJAJD00KDJAO02"
-  #     },
-  #     info: %{
-  #       first_name: "User",
-  #       email: "test@test.com",
-  #       image: %{
-  #         prefix: "https://user.image.com/",
-  #         suffix: "image/user.png"
-  #       },
-  #     }
-  #   }
+  @user_auth %{
+    uid: "123456789",
+    credentials: %{
+      token: "QJJSIJD89AJDQKJ2MGJAJD00KDJAO02"
+    },
+    info: %{
+      first_name: "User",
+      email: "test@test.com",
+      image: %{
+        "prefix" => "https://user.image.com/",
+        "suffix" => "image/user.png"
+      },
+    }
+  }
 
-  #   provider = "foursquare"
+  test "creates user from Foursquare information", %{conn: conn} do
+    conn
+      |> assign(:ueberauth_auth, @user_auth)
+      |> get("/auth/foursquare/callback")
 
-  #   response =
-  #     conn
-  #     |> get(user_path(conn, :callback, user))
-  #     |> json_response(200)
+    users = User |> Repo.all
 
-  #   assert response == redirect(to: venue_path(conn, :list))
-  # end
+    assert Enum.count(users) == 1
+  end
 end
