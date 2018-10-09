@@ -18,13 +18,24 @@ defmodule WishlisterWeb.UserControllerTest do
     }
   }
 
-  test "creates user from Foursquare information", %{conn: conn} do
-    conn
-      |> assign(:ueberauth_auth, @user_auth)
-      |> get("/auth/foursquare/callback")
+  test "creates user from Foursquare information auth", %{conn: conn} do
+    conn = conn
+    |> assign(:ueberauth_auth, @user_auth)
+    |> get(user_path(conn, :callback, "foursquare"))
 
     users = User |> Repo.all
 
     assert Enum.count(users) == 1
+    assert redirected_to(conn, 302) == "/wishlist"
+    assert get_flash(conn, :info) == "Welcome back!"
+  end
+
+  test "signs out user", %{conn: conn} do
+    conn = conn
+      |> assign(:user, @user_auth)
+      |> get(user_path(conn, :signout))
+
+    assert conn.assigns.user == nil
+    assert redirected_to(conn, 302) == "/"
   end
 end
