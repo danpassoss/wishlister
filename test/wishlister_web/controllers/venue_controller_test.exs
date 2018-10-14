@@ -10,15 +10,20 @@ defmodule WishlisterWeb.VenueControllerTest do
     Repo
   }
 
-  @user_changeset %User{}
-    |> User.changeset(%{
-        avatar: "https://avatar.com/user.png",
-        email: "user@email.com",
-        name: "User Test",
-        provider: "foursquare",
-        provider_uid: 000001,
-        token: "ASD8AJJAWWWMFNFB1233MAMDNAAOKSKDJ9"
-      })
+  @user_info %{
+    uid: "123456789",
+    credentials: %{
+      token: "QJJSIJD89AJDQKJ2MGJAJD00KDJAO02"
+    },
+    info: %{
+      first_name: "User",
+      email: "test@test.com",
+      image: %{
+        "prefix" => "https://user.image.com/",
+        "suffix" => "image/user.png"
+      },
+    }
+  }
 
   @venue_params %{
     "checkin" => %{
@@ -84,7 +89,7 @@ defmodule WishlisterWeb.VenueControllerTest do
   end
 
   defp create_user do
-    {:ok, user} = Accounts.insert_or_update_user(@user_changeset)
+    {:ok, user} = Accounts.sign_in_user(@user_info, "foursquare")
     user
   end
 

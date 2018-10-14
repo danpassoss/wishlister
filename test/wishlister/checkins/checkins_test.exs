@@ -5,12 +5,18 @@ defmodule Wishlister.CheckinsTest do
   alias Wishlister.{Accounts, Accounts.User}
 
   @user %{
-    avatar: "https://user.avatar/image.png",
-    email: "user@test.com",
-    name: "User",
-    provider: "foursquare",
-    provider_uid: 123456789,
-    token: "ASDOKK89KDOAKS82HDD21NM0021"
+    uid: "123456789",
+    credentials: %{
+      token: "QJJSIJD89AJDQKJ2MGJAJD00KDJAO02"
+    },
+    info: %{
+      first_name: "User",
+      email: "test@test.com",
+      image: %{
+        "prefix" => "https://user.image.com/",
+        "suffix" => "image/user.png"
+      },
+    }
   }
 
   @venue %{
@@ -39,17 +45,16 @@ defmodule Wishlister.CheckinsTest do
       refute wishlist == []
     end
 
-    # test "test", %{user: user} do
-    #   response = Checkins.recents_friends_checkins(user.token)
-    #   assert is_list(response)
-    # end
+    test "should return recents friends checkins", %{user: user} do
+      response = Checkins.recents_friends_checkins(user.token)
+      assert is_list(response)
+      assert Enum.count(response) > 0
+    end
 
   end
 
   defp return_user(_) do
-    {:ok, struct} =
-    User.changeset(%User{}, @user)
-    |> Accounts.insert_or_update_user
+    {:ok, struct} = Accounts.sign_in_user(@user, "foursquare")
 
     %{user: struct}
   end
