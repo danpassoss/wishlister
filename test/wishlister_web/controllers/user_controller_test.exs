@@ -1,7 +1,7 @@
 defmodule WishlisterWeb.UserControllerTest do
   use WishlisterWeb.ConnCase
 
-  alias Wishlister.{Accounts, Accounts.User, Repo}
+  alias Wishlister.{Accounts.User, Repo}
 
   @user_auth %{
     uid: "123456789",

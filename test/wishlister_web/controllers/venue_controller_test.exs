@@ -10,37 +10,89 @@ defmodule WishlisterWeb.VenueControllerTest do
     Repo
   }
 
-  @create_user_attrs %User{}
-    |> User.changeset%{
+  @user_changeset %User{}
+    |> User.changeset(%{
         avatar: "https://avatar.com/user.png",
         email: "user@email.com",
         name: "User Test",
         provider: "foursquare",
         provider_uid: 000001,
         token: "ASD8AJJAWWWMFNFB1233MAMDNAAOKSKDJ9"
-      }
+      })
+
+  @venue_params %{
+    "checkin" => %{
+      image_url: "http://placehold.it/300x300",
+      name: "Venue Mock 1",
+      venue_pid: "5ze147895e7o6598f4b1432657"
+    }
+  }
 
 
-  describe "test venue_controller endpoints" do
+  test "GET /index, should shows a button with signin information", %{conn: conn} do
+    assert html_response(get(conn, venue_path(conn, :index)), 200) =~ "Sign in with Foursquare"
+  end
 
-    setup [:create_user]
+  describe "tests venue_controller actions that require a user" do
 
-    test "GET /index, should shows an button with signin information", %{conn: conn} do
-      assert html_response(get(conn, venue_path(conn, :index)), 200) =~ "Sign in with Foursquare"
-    end
+    setup [:configure_user_connection]
 
-    test "GET /list, should shows user wishlist and recent friends checkins", %{conn: conn, user: user} do
+    test "GET /list, should shows an empty user wishlist and recent friends checkins", %{conn: conn} do
       conn = conn
-        |> init_test_session(user_id: user.id)
-        |> assign(:user, user)
         |> get(venue_path(conn, :list))
 
       assert html_response(conn, 200) =~  "User wishlist", "Recents Friends Checkins"
+      assert conn
+        |> get_user_id
+        |> get_wishlist == []
+    end
+
+    test "POST /create, should add a venue to user wishlist", %{conn: conn} do
+      conn = conn
+        |> post(venue_path(conn, :create, @venue_params))
+
+
+      assert redirected_to(conn, 302) == "/wishlist"
+      assert get_flash(conn, :info) == "Venue added on your wishlist"
+      assert conn
+        |> get_user_id
+        |> get_wishlist
+        |> Enum.count == 1
+    end
+
+    test "DELETE /delete, should remove a venue from user wishlist", %{conn: conn} do
+      %{"checkin" => venue_info}  = @venue_params
+      {:ok, venue} = Checkins.add_venue_to_wishlist(conn.assigns[:user], venue_info)
+
+      conn = conn
+        |> delete(venue_path(conn, :delete, venue.id))
+
+        assert redirected_to(conn, 302) == "/wishlist"
+        assert get_flash(conn, :info) == "Venue removed from your wishlist!"
+        assert conn
+          |> get_user_id
+          |> get_wishlist == []
     end
   end
 
-  defp create_user(_) do
-    {:ok, user} = Accounts.insert_or_update_user(@create_user_attrs)
-    {:ok, user: user}
+  defp configure_user_connection(_) do
+    user = create_user()
+    conn = build_conn()
+      |> init_test_session(user_id: user.id)
+      |> assign(:user, user)
+    {:ok, conn: conn}
+  end
+
+  defp create_user do
+    {:ok, user} = Accounts.insert_or_update_user(@user_changeset)
+    user
+  end
+
+  defp get_wishlist(user_id) do
+    Checkins.get_user_wishlist(user_id)
+  end
+
+  defp get_user_id(conn) do
+    conn.assigns[:user].id
   end
 end
