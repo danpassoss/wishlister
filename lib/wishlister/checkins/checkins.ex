@@ -3,10 +3,11 @@ defmodule Wishlister.Checkins do
   import Ecto.Query
 
   alias Wishlister.{
-    Api.Foursquare,
     Checkins.Venue,
     Repo
   }
+
+  @foursquare_api Application.get_env(:wishlister, :foursquare_api)
 
 
   def get_user_wishlist(user_id) do
@@ -15,7 +16,7 @@ defmodule Wishlister.Checkins do
 
   def recents_friends_checkins(user_token) do
     user_token
-      |> Foursquare.get_recent_friends_checkins
+      |> @foursquare_api.get_recent_friends_checkins
   end
 
   def add_venue_to_wishlist(user, venue) do

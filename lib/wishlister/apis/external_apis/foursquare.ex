@@ -26,22 +26,19 @@ defmodule Wishlister.Api.Foursquare do
   defp get_request(path_url) do
     case HTTPoison.get(base_url() <> path_url) do
       {:ok, %HTTPoison.Response{body: body, status_code: 200}} ->
-        parse_response(body)
+        {:ok, parse_response(body)}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
-        # Clean warning: A expression is always required...
-        IO.inspect(reason)
+        {:error, reason}
     end
   end
 
   defp parse_response(body) do
-    response = body
+    body
       |> JSON.decode!()
-
-    {:ok, response}
   end
 
-  defp build_venue_friends_list(%{"response" => %{"recent" => checkins}}, user_token) do
+  defp build_venue_friends_list({:ok, %{"response" => %{"recent" => checkins}}}, user_token) do
     for checkin <- checkins do
       %{
         venue_pid: checkin["venue"]["id"],
@@ -53,8 +50,8 @@ defmodule Wishlister.Api.Foursquare do
 
   defp venue_img_request(venue_id, token) do
     case get_request(venue_img_path_url(venue_id, token)) do
-      {:ok, body} ->
-        build_venue_img_url(body)
+      {:ok, response} ->
+        build_venue_img_url(response)
 
       {:error, reason} ->
         IO.inspect(reason)

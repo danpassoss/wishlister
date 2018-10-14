@@ -18,7 +18,7 @@ defmodule WishlisterWeb.UserControllerTest do
     }
   }
 
-  test "creates user from Foursquare information auth", %{conn: conn} do
+  test "creates and sign in user, from Foursquare information auth", %{conn: conn} do
     conn = conn
     |> assign(:ueberauth_auth, @user_auth)
     |> get(user_path(conn, :callback, "foursquare"))

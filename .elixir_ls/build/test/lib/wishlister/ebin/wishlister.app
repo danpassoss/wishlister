@@ -7,6 +7,7 @@
               {modules,['Elixir.Wishlister','Elixir.Wishlister.Accounts',
                         'Elixir.Wishlister.Accounts.User',
                         'Elixir.Wishlister.Api.Foursquare',
+                        'Elixir.Wishlister.Api.Foursquare.Mock',
                         'Elixir.Wishlister.Application',
                         'Elixir.Wishlister.Checkins',
                         'Elixir.Wishlister.Checkins.Venue',

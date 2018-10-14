@@ -15,3 +15,6 @@ config :wishlister, Wishlister.Repo,
   pool_size: 18,
   ssl: true,
   url: System.get_env("DATABASE_URL")
+
+# Set Foursquare Api Module to use in production
+config(:wishlister, :foursquare_api, Wishlister.Api.Foursquare)

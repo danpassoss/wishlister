@@ -17,3 +17,6 @@ config :wishlister, Wishlister.Repo,
   database: "wishlister_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
+
+# Set Foursquare Api Module to use in test
+config(:wishlister, :foursquare_api, Wishlister.Api.Foursquare.Mock)

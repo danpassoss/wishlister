@@ -56,3 +56,6 @@ config :wishlister, Wishlister.Repo,
   database: "wishlister_dev",
   hostname: "localhost",
   pool_size: 10
+
+# Set Foursquare Api Module to use in development
+config(:wishlister, :foursquare_api, Wishlister.Api.Foursquare)
