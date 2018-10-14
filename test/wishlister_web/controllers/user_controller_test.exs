@@ -32,10 +32,10 @@ defmodule WishlisterWeb.UserControllerTest do
 
   test "signs out user", %{conn: conn} do
     conn = conn
-      |> assign(:user, @user_auth)
+      |> assign(:ueberauth_auth, @user_auth)
+      |> get(user_path(conn, :callback, "foursquare"))
       |> get(user_path(conn, :signout))
 
-    assert conn.assigns.user == nil
     assert redirected_to(conn, 302) == "/"
   end
 end

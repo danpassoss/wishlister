@@ -4,10 +4,7 @@ defmodule WishlisterWeb.VenueControllerTest do
 
   alias Wishlister.{
     Accounts,
-    Accounts.User,
     Checkins,
-    Checkins.Venue,
-    Repo
   }
 
   @user_info %{
@@ -119,7 +116,7 @@ defmodule WishlisterWeb.VenueControllerTest do
   end
 
   defp drop_user_from_connection(conn) do
-    conn = update_in(conn.assigns, &Map.drop(&1, [:user]))
+    update_in(conn.assigns, &Map.drop(&1, [:user]))
     |> clear_session()
   end
 

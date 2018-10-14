@@ -2,7 +2,7 @@ defmodule Wishlister.CheckinsTest do
   use Wishlister.DataCase
 
   alias Wishlister.Checkins
-  alias Wishlister.{Accounts, Accounts.User}
+  alias Wishlister.Accounts
 
   @user %{
     uid: "123456789",
