@@ -52,6 +52,15 @@ defmodule WishlisterWeb.VenueControllerTest do
         |> get_wishlist == []
     end
 
+    test "GET /list, should not be allowed, if the user is not authenticated", %{conn: conn} do
+      conn = conn
+        |> drop_user_from_connection
+        |> get(venue_path(conn, :list))
+
+        assert redirected_to(conn, 302) == "/"
+        assert get_flash(conn, :error) == "You must be logged in."
+    end
+
     test "POST /create, should add a venue to user wishlist", %{conn: conn} do
       conn = conn
         |> post(venue_path(conn, :create, @venue_params))
@@ -63,6 +72,15 @@ defmodule WishlisterWeb.VenueControllerTest do
         |> get_user_id
         |> get_wishlist
         |> Enum.count == 1
+    end
+
+    test "POST /create, should not be allowed, if the user is not authenticated", %{conn: conn} do
+      conn = conn
+        |> drop_user_from_connection
+        |> post(venue_path(conn, :create, @venue_params))
+
+        assert redirected_to(conn, 302) == "/"
+        assert get_flash(conn, :error) == "You must be logged in."
     end
 
     test "DELETE /delete, should remove a venue from user wishlist", %{conn: conn} do
@@ -78,6 +96,18 @@ defmodule WishlisterWeb.VenueControllerTest do
           |> get_user_id
           |> get_wishlist == []
     end
+
+    test "DELETE /delete, should not be allowed, if the user is not authenticated", %{conn: conn} do
+      %{"checkin" => venue_info}  = @venue_params
+      {:ok, venue} = Checkins.add_venue_to_wishlist(conn.assigns[:user], venue_info)
+
+      conn = conn
+        |> drop_user_from_connection
+        |> delete(venue_path(conn, :delete, venue.id))
+
+      assert redirected_to(conn, 302) == "/"
+      assert get_flash(conn, :error) == "You must be logged in."
+    end
   end
 
   defp configure_user_connection(_) do
@@ -86,6 +116,11 @@ defmodule WishlisterWeb.VenueControllerTest do
       |> init_test_session(user_id: user.id)
       |> assign(:user, user)
     {:ok, conn: conn}
+  end
+
+  defp drop_user_from_connection(conn) do
+    conn = update_in(conn.assigns, &Map.drop(&1, [:user]))
+    |> clear_session()
   end
 
   defp create_user do
